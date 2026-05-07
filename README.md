@@ -1,7 +1,7 @@
 # 🌐 ADVANCED WEATHER STATION SIMULATOR // KALAPASTANGAN
-> [cite_start]**Project Sector:** ADET211 [cite: 7]
-> [cite_start]**Instructor:** Sir June Francisco [cite: 9]
-> [cite_start]**Status:** Active Deployment [cite: 87]
+> **Project Sector:** ADET211
+> **Instructor:** Sir June Francisco
+> **Status:** Active Deployment
 
 [cite_start]The **Advanced Weather Station Simulator** is an Arduino-based system designed to monitor environmental conditions such as temperature, humidity, and light intensity[cite: 15]. [cite_start]The system automatically triggers hardware responses—including a fan, LED, and buzzer—based on real-time sensor telemetry to improve safety and energy efficiency[cite: 16, 17].
 
