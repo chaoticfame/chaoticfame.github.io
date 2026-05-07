@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALAPASTANGAN // WEATHER_STATION_OS</title>
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00f3ff;
+            --bg-dark: #050505;
+            --grid-color: rgba(255, 0, 255, 0.2);
+            --terminal-text: #e0e0e0;
+            --danger: #ff0055;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--terminal-text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Sidebar HUD */
+        nav {
+            width: 300px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            border-right: 2px solid var(--neon-cyan);
+            background: rgba(5, 5, 5, 0.9);
+            padding: 2rem;
+            box-shadow: 10px 0 20px rgba(0, 243, 255, 0.1);
+            z-index: 10;
+        }
+
+        nav h2 { color: var(--neon-cyan); font-size: 0.9rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        nav a { display: block; color: var(--terminal-text); text-decoration: none; padding: 0.8rem 0; font-size: 0.85rem; border-bottom: 1px solid rgba(0, 243, 255, 0.2); }
+        nav a:hover { color: var(--neon-pink); padding-left: 10px; transition: all 0.3s; }
+
+        /* Main Display */
+        main { flex: 1; padding: 3rem; max-width: 1000px; }
+
+        header {
+            border: 2px solid var(--neon-pink);
+            padding: 2rem;
+            position: relative;
+            margin-bottom: 4rem;
+            background: rgba(255, 0, 255, 0.05);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Brush Script MT', cursive; /* To mimic the image logo style */
+            font-size: 4rem;
+            color: var(--neon-pink);
+            margin: 0;
+            text-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .system-id { color: var(--neon-cyan); font-weight: bold; letter-spacing: 3px; }
+
+        section { margin-bottom: 5rem; }
+        h2 { color: var(--neon-cyan); border-left: 5px solid var(--neon-cyan); padding-left: 15px; text-transform: uppercase; }
+
+        /* Data Tables */
+        table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: rgba(0, 243, 255, 0.03); }
+        th { color: var(--neon-cyan); border-bottom: 2px solid var(--neon-cyan); padding: 1rem; text-align: left; }
+        td { padding: 1rem; border-bottom: 1px solid rgba(0, 243, 255, 0.1); }
+
+        /* Module Blocks */
+        .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .module-card {
+            border: 1px solid var(--neon-cyan);
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+        .module-card::after {
+            content: "ACTIVE";
+            position: absolute;
+            top: 5px; right: 5px;
+            font-size: 0.6rem;
+            color: var(--neon-cyan);
+        }
+
+        /* Logic Alerts */
+        .alert-box {
+            border: 1px solid var(--danger);
+            background: rgba(255, 0, 85, 0.1);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            color: var(--danger);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .step { margin-bottom: 2rem; padding-left: 40px; position: relative; }
+        .step::before {
+            content: "SEQ";
+            position: absolute;
+            left: 0; top: 0;
+            color: var(--neon-pink);
+            font-size: 0.7rem;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.9; }
+            10% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+        .flicker { animation: flicker 0.1s infinite; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2 class="flicker">CORE_DIRECTORY</h2>
+    <a href="#init">01_INITIALIZATION</a>
+    <a href="#hardware">02_HARDWARE_GRID</a>
+    <a href="#logic">03_LOGIC_MATRIX</a>
+    <a href="#ops">04_DEPLOYMENT</a>
+    <a href="#safety">05_INTEGRITY</a>
+    <a href="#team">06_ENGINEERING_TEAM</a>
+</nav>
+
+<main>
+    <header>
+        <div class="system-id">ADET211 // PROJECT_V1</div>
+        <h1 class="flicker">Kalapastangan</h1>
+        <div style="font-size: 1.5rem; color: var(--neon-cyan);">WEATHER STATION SIMULATOR</div>
+    </header>
+
+    <section id="init">
+        <h2>01. System Introduction</h2>
+        <p>Advanced Arduino-based environmental surveillance[cite: 15]. Monitors temperature, humidity, and luminosity vectors to execute automated climate responses[cite: 16]. This project demonstrates sensor integration for high-efficiency safety and comfort protocols[cite: 17].</p>
+    </section>
+
+    <section id="hardware">
+        <h2>02. Hardware Grid</h2>
+        <div class="module-grid">
+            <div class="module-card">
+                <strong style="color:var(--neon-pink)">DHT11 SENSOR</strong><br>
+                Thermal and moisture telemetry[cite: 21].
+            </div>
+            <div class="module-card">
+                <strong style="color:var(--neon-pink)">LDR PHOTO-RESISTOR</strong><br>
+                Ambient luminosity detection[cite: 21].
+            </div>
+            <div class="module-card">
+                <strong style="color:var(--neon-pink)">NMOS TRANSISTOR</strong><br>
+                High-voltage motor regulation[cite: 21].
+            </div>
+            <div class="module-card">
+                <strong style="color:var(--neon-pink)">9V POWER CELL</strong><br>
+                Dedicated DC fan energy source[cite: 21].
+            </div>
+        </div>
+    </section>
+
+    <section id="logic">
+        <h2>03. Logic Matrix (Execution Thresholds)</h2>
+        <div class="alert-box">CRITICAL THRESHOLD MONITORING ACTIVE</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>SIGNAL TYPE</th>
+                    <th>THRESHOLD</th>
+                    <th>SYSTEM RESPONSE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>THERMAL</td><td>≥ 30°C [cite: 54]</td><td>FAN_ACTIVATE [cite: 53]</td></tr>
+                <tr><td>LUMINOSITY</td><td>< 300 [cite: 55]</td><td>LED_ACTIVATE [cite: 56]</td></tr>
+                <tr><td>HUMIDITY</td><td>≥ 75% [cite: 57]</td><td>BUZZER_ALARM [cite: 58]</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="ops">
+        <h2>04. Deployment Sequence</h2>
+        <div class="step">
+            <strong>PORT MAP:</strong> Map DHT11 to Pin 7, Buzzer to Pin 8, and Motor to Pin 9[cite: 30, 32, 34]. LDR requires Analog A0[cite: 38].
+        </div>
+        <div class="step">
+            <strong>UPLINK:</strong> Establish USB bridge between Arduino Uno and Host Terminal[cite: 39].
+        </div>
+        <div class="step">
+            <strong>COMPILE:</strong> Inject firmware via Arduino IDE[cite: 40].
+        </div>
+        <div class="step">
+            <strong>MONITOR:</strong> Initialize Serial Stream at 9600 Baud[cite: 41].
+        </div>
+    </section>
+
+    <section id="safety">
+        <h2>05. Integrity & Safety Protocols</h2>
+        <ul>
+            <li>Avoid aqueous exposure (H2O Hazard)[cite: 61].</li>
+            <li>NMOS isolation required for motor safety[cite: 63].</li>
+            <li>Verify COM port integrity if serial link fails[cite: 67].</li>
+        </ul>
+    </section>
+
+    <section id="team">
+        <h2>06. Engineering Team // Kalapastangan</h2>
+        <p style="color: var(--neon-cyan)">[BSIT 2-Y2-6 CLASSIFIED]</p>
+        <ul style="list-style: none; padding: 0;">
+            <li><span style="color: var(--neon-pink)">></span> Stephen Aniceto Lacson [Project Manager] [cite: 81]</li>
+            <li><span style="color: var(--neon-pink)">></span> Anton Demeterio Elago [Programmer] [cite: 82]</li>
+            <li><span style="color: var(--neon-pink)">></span> Raven Jay Carbonell [Hardware Lead] [cite: 83]</li>
+            <li><span style="color: var(--neon-pink)">></span> Christian Michael Portugal [Designer] [cite: 84]</li>
+        </ul>
+    </section>
+</main>
+
+</body>
+</html>
